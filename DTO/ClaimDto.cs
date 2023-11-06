@@ -1,20 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using InsuranceApp.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace InsuranceApp.Models
+namespace InsuranceApp.DTO
 {
-    public class Claim
+    public class ClaimDto
     {
-        [Key]
         public int ClaimId { get; set; }
         public double ClaimAmount { get; set; }
         public double BankAccountNumber { get; set; }
         public string BankIfscCode { get; set; }
         public DateTime Date { get; set; }
         public string Status { get; set; }
-        public InsurancePolicy Policy { get; set; }
-        [ForeignKey("InsurancePolicy")]
+        
         public int PolicyNo { get; set; }
-        public bool IsActive { get; set; }
     }
 }
