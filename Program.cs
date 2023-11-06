@@ -1,5 +1,6 @@
 using InsuranceApp.Data;
 using InsuranceApp.Repository;
+using InsuranceApp.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -19,6 +20,8 @@ namespace InsuranceApp
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
             builder.Services.AddTransient(typeof(IEntityRepository<>), typeof(EntityRepository<>));
+            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IRoleService, RoleService>();
             builder.Services.AddDbContext<MyContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("connString"));
