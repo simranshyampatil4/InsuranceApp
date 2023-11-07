@@ -9,7 +9,7 @@ namespace InsuranceApp.Models
         public int DocumentId { get; set; }
         public string DocumentType { get; set; }
         public string DocumentName { get; set; }
-        public string DocumentFile { get; set; } //Document file datatype
+        public byte[] DocumentFile { get; set; } //Document file datatype
         public bool IsActive { get; set; }
         public Customer Customer { get; set; }
         [ForeignKey("Customer")]

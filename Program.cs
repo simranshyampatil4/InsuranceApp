@@ -1,4 +1,5 @@
 using InsuranceApp.Data;
+using InsuranceApp.Middleware;
 using InsuranceApp.Repository;
 using InsuranceApp.Services;
 using Microsoft.EntityFrameworkCore;
@@ -22,14 +23,13 @@ namespace InsuranceApp
             builder.Services.AddTransient(typeof(IEntityRepository<>), typeof(EntityRepository<>));
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IRoleService, RoleService>();
-<<<<<<< HEAD
+
             builder.Services.AddTransient<IAgentService, AgentService>();
             builder.Services.AddTransient<ICustomerService, CustomerService>();
             builder.Services.AddTransient<IDocumentService, DocumentService>();
-=======
             builder.Services.AddTransient<IPaymentService, PaymentService>();
             builder.Services.AddTransient<IClaimService, ClaimService>();
->>>>>>> friend/master
+
             builder.Services.AddDbContext<MyContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("connString"));
@@ -51,7 +51,7 @@ namespace InsuranceApp
 
             app.UseAuthorization();
 
-
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.MapControllers();
 
             app.Run();
