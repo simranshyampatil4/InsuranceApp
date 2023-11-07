@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,8 @@ namespace InsuranceApp.Controllers
                     insurancePolicyDtos.Add(ConvertToDto(insurancePolicy));
                 return Ok(insurancePolicyDtos);
             }
-            return NotFound("No users created");
+            throw new EntityNotFoundError("No Such Insurance Policy Found");
+            //return NotFound("No users created");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -34,7 +36,8 @@ namespace InsuranceApp.Controllers
             var insurancePolicy = _insurancePolicyService.Get(id);
             if (insurancePolicy != null)
                 return Ok(ConvertToDto(insurancePolicy));
-            return BadRequest("No such User Found");
+            throw new EntityNotFoundError("No Such Insurance Policy Found");
+            //return BadRequest("No such User Found");
         }
         [HttpPost]
         public IActionResult Add(InsurancePolicyDto insurancePolicyDto)
@@ -43,7 +46,8 @@ namespace InsuranceApp.Controllers
             int id = _insurancePolicyService.Add(insurancePolicy);
             if (id != null)
                 return Ok(id);
-            return BadRequest("Some issue while adding record");
+            throw new EntityInsertError("Some issue while adding Insurance Policy");
+            //return BadRequest("Some issue while adding record");
         }
         [HttpPut]
         public IActionResult Update(InsurancePolicyDto insurancePolicyDto)
@@ -55,7 +59,8 @@ namespace InsuranceApp.Controllers
                 var modifiedPolicy = _insurancePolicyService.Update(insurancePolicy);
                 return Ok(ConvertToDto(modifiedPolicy));
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No Such Insurance Policy Exists");
+            //return BadRequest("No such record exists");
         }
         [HttpDelete("{id:int}")]
         public IActionResult DeleteById(int id)
@@ -66,7 +71,8 @@ namespace InsuranceApp.Controllers
                 _insurancePolicyService.Delete(insurancePolicyToDelete);
                 return Ok(insurancePolicyToDelete.PlanId);
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No Such Insurance Policy exists");
+            //return BadRequest("No such record exists");
         }
         private InsurancePolicyDto ConvertToDto(InsurancePolicy insurancePolicy)
         {

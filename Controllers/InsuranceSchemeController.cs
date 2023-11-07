@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,8 @@ namespace InsuranceApp.Controllers
                     insuranceSchemeDtos.Add(ConvertToDto(insurScheme));
                 return Ok(insuranceSchemeDtos);
             }
-            return NotFound("No users created");
+            throw new EntityNotFoundError("No Such Insurance Scheme Found");
+            //return NotFound("No users created");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -34,7 +36,8 @@ namespace InsuranceApp.Controllers
             var insurScheme = _insuranceSchemeService.Get(id);
             if (insurScheme != null)
                 return Ok(ConvertToDto(insurScheme));
-            return BadRequest("No such User Found");
+            throw new EntityNotFoundError("No Such Insurance Scheme Found");
+            //return BadRequest("No such User Found");
         }
         [HttpPost]
         public IActionResult Add(InsuranceSchemeDto insuranceSchemeDto)
@@ -43,7 +46,9 @@ namespace InsuranceApp.Controllers
             int id = _insuranceSchemeService.Add(insuranceScheme);
             if (id != null)
                 return Ok(id);
-            return BadRequest("Some issue while adding record");
+            throw new EntityInsertError("Some issue while adding Insurance Scheme");
+
+            //return BadRequest("Some issue while adding record");
         }
         [HttpPut]
         public IActionResult Update(InsuranceSchemeDto insuranceSchemeDto)
@@ -55,7 +60,9 @@ namespace InsuranceApp.Controllers
                 var modifiedScheme = _insuranceSchemeService.Update(insuranceScheme);
                 return Ok(ConvertToDto(modifiedScheme));
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No Such Insurance Scheme Exists");
+
+            //return BadRequest("No such record exists");
         }
         [HttpDelete("{id:int}")]
         public IActionResult DeleteById(int id)
@@ -66,7 +73,8 @@ namespace InsuranceApp.Controllers
                 _insuranceSchemeService.Delete(insuranceSchemeToDelete);
                 return Ok(insuranceSchemeToDelete.SchemeId);
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No Such Insurance Scheme exists");
+            //return BadRequest("No such record exists");
         }
         private InsuranceSchemeDto ConvertToDto(InsuranceScheme insuranceScheme)
         {
