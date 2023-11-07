@@ -22,6 +22,9 @@ namespace InsuranceApp
             builder.Services.AddTransient(typeof(IEntityRepository<>), typeof(EntityRepository<>));
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IRoleService, RoleService>();
+            builder.Services.AddTransient<IAgentService, AgentService>();
+            builder.Services.AddTransient<ICustomerService, CustomerService>();
+            builder.Services.AddTransient<IDocumentService, DocumentService>();
             builder.Services.AddDbContext<MyContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("connString"));
