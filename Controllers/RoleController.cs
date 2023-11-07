@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace InsuranceApp.Controllers
                     roleDtos.Add(ConvertToDto(role));
                 return Ok(roleDtos);
             }
-            return NotFound("No users created");
+            throw new EntityNotFoundError("No role created");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -34,7 +35,7 @@ namespace InsuranceApp.Controllers
             var role = _roleService.Get(id);
             if (role != null)
                 return Ok(ConvertToDto(role));
-            return BadRequest("No such Role Found");
+            throw new EntityNotFoundError("No such Role Found");
         }
         [HttpPost]
         public IActionResult Add(RoleDto roleDto)
@@ -43,7 +44,7 @@ namespace InsuranceApp.Controllers
             int id = _roleService.Add(role);
             if (id != null)
                 return Ok(id);
-            return BadRequest("Some issue while adding record");
+            throw new EntityInsertError("Some issue while adding record");
         }
         [HttpPut]
         public IActionResult Update(RoleDto roleDto)
@@ -55,7 +56,7 @@ namespace InsuranceApp.Controllers
                 var modifiedRole = _roleService.Update(role);
                 return Ok(ConvertToDto(modifiedRole));
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
         [HttpDelete("{id:int}")]
         public IActionResult DeleteById(int id)
@@ -66,7 +67,7 @@ namespace InsuranceApp.Controllers
                 _roleService.Delete(roleToDelete);
                 return Ok(roleToDelete.RoleId);
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
         private RoleDto ConvertToDto(Role role)
         {

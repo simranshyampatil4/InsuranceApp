@@ -23,7 +23,7 @@ namespace InsuranceApp
             builder.Services.AddTransient(typeof(IEntityRepository<>), typeof(EntityRepository<>));
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IRoleService, RoleService>();
-
+            builder.Services.AddTransient<IEmployeeService, EmployeeService>();
             builder.Services.AddTransient<IAgentService, AgentService>();
             builder.Services.AddTransient<ICustomerService, CustomerService>();
             builder.Services.AddTransient<IDocumentService, DocumentService>();
