@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceApp.Controllers
                 return Ok(adminDtos);
             }
 
-            return NotFound("No admins created");
+            throw new EntityNotFoundError("No admins created");
         }
 
         [HttpGet("{id:int}")]
@@ -38,7 +39,7 @@ namespace InsuranceApp.Controllers
             var admin = _adminService.Get(id);
             if (admin != null)
                 return Ok(ConvertToDto(admin));
-            return BadRequest("No such admin found");
+            throw new EntityNotFoundError("No such admin found");
         }
 
         [HttpPost]
@@ -48,7 +49,7 @@ namespace InsuranceApp.Controllers
             int id = _adminService.Add(admin);
             if (id != 0)
                 return Ok(id);
-            return BadRequest("Some issue while adding the admin");
+            throw new EntityInsertError("Some issue while adding the admin");
         }
 
         [HttpPut]
@@ -61,7 +62,7 @@ namespace InsuranceApp.Controllers
                 var modifiedAdmin = _adminService.Update(admin);
                 return Ok(ConvertToDto(modifiedAdmin));
             }
-            return BadRequest("No such admin record exists");
+            throw new EntityNotFoundError("No such admin record exists");
         }
 
         [HttpDelete("{id:int}")]
@@ -73,7 +74,7 @@ namespace InsuranceApp.Controllers
                 _adminService.Delete(adminToDelete);
                 return Ok(adminToDelete.AdminId);
             }
-            return NotFound("No such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
 
         private AdminDto ConvertToDto(Admin admin)
