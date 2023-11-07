@@ -1,5 +1,6 @@
 ﻿
 using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,7 @@ namespace InsuranceApp.Controllers
                 return Ok(agentDtos);
             }
 
-            return NotFound("No agents created");
+            throw new EntityNotFoundError("No agents created");
         }
 
         [HttpGet]
@@ -40,7 +41,7 @@ namespace InsuranceApp.Controllers
             var agent = _agentService.Get(id);
             if (agent != null)
                 return Ok(ConvertToDto(agent));
-            return BadRequest("No such agent found");
+            throw new  EntityNotFoundError("No such agent found");
         }
 
         [HttpPost]
@@ -50,7 +51,7 @@ namespace InsuranceApp.Controllers
             int id = _agentService.Add(agentModel);
             if (id != 0)
                 return Ok(id);
-            return BadRequest("Some issue while adding the agent");
+            throw new EntityInsertError("Some issue while adding the agent");
         }
 
         [HttpPut]
@@ -63,7 +64,7 @@ namespace InsuranceApp.Controllers
                 var modifiedAgent = _agentService.Update(agent);
                 return Ok(ConvertToDto(modifiedAgent));
             }
-            return BadRequest("No such agent record exists");
+            throw new EntityNotFoundError("No such agent record exists");
         }
 
         [HttpDelete("{id:int}")]
@@ -75,7 +76,7 @@ namespace InsuranceApp.Controllers
                 _agentService.Delete(agentToDelete);
                 return Ok(agentToDelete.AgentId);
             }
-            return BadRequest("Agent  does not exist");
+            throw new EntityNotFoundError("Agent does not exist");
         }
 
         private AgentDto ConvertToDto(Agent agent)

@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceApp.Controllers
                 return Ok(documentDtos);
             }
 
-            return NotFound("No documents created");
+            throw new EntityNotFoundError("No documents created");
         }
 
         [HttpGet]
@@ -38,7 +39,7 @@ namespace InsuranceApp.Controllers
             var document = _documentService.Get(id);
             if (document != null)
                 return Ok(ConvertToDto(document));
-            return BadRequest("No such document found");
+            throw new EntityNotFoundError("No such document found");
         }
 
         [HttpPost]
@@ -48,7 +49,7 @@ namespace InsuranceApp.Controllers
             int id = _documentService.Add(documentModel);
             if (id != 0)
                 return Ok(id);
-            return BadRequest("Some issue while adding the document");
+            throw new EntityInsertError("Some issue while adding the document");
         }
 
         [HttpPut]
@@ -61,7 +62,7 @@ namespace InsuranceApp.Controllers
                 var modifiedDocument = _documentService.Update(document);
                 return Ok(ConvertToDto(modifiedDocument));
             }
-            return BadRequest("No such document record exists");
+            throw new EntityNotFoundError("No such document record exists");
         }
 
         [HttpDelete("{id:int}")]
@@ -73,7 +74,7 @@ namespace InsuranceApp.Controllers
                 _documentService.Delete(documentToDelete);
                 return Ok(documentToDelete.DocumentId);
             }
-            return BadRequest("no such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
 
         private DocumentDto ConvertToDto(Document document)

@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace InsuranceApp.Controllers
                 return Ok(customerDtos);
             }
 
-            return NotFound("No customers created");
+            throw new EntityNotFoundError("No customers created");
         }
 
         [HttpGet]
@@ -38,7 +39,7 @@ namespace InsuranceApp.Controllers
             var customer = _customerService.Get(id);
             if (customer != null)
                 return Ok(ConvertToDto(customer));
-            return BadRequest("No such customer found");
+            throw new EntityNotFoundError("No such customer found");
         }
 
         [HttpPost]
@@ -48,7 +49,7 @@ namespace InsuranceApp.Controllers
             int id = _customerService.Add(customerModel);
             if (id != 0)
                 return Ok(id);
-            return BadRequest("Some issue while adding the customer");
+            throw new EntityInsertError("Some issue while adding the customer");
         }
 
         [HttpPut]
@@ -61,7 +62,7 @@ namespace InsuranceApp.Controllers
                 var modifiedCustomer = _customerService.Update(customer);
                 return Ok(ConvertToDto(modifiedCustomer));
             }
-            return BadRequest("No such customer record exists");
+            throw new EntityNotFoundError("No such customer record exists");
         }
 
         [HttpDelete("{id:int}")]
@@ -73,7 +74,7 @@ namespace InsuranceApp.Controllers
                 _customerService.Delete(customerToDelete);
                 return Ok(customerToDelete.CustomerId);
             }
-            return BadRequest("no such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
 
         private CustomerDto ConvertToDto(Customer customer)
