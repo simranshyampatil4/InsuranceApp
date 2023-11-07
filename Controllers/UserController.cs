@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace InsuranceApp.Controllers
                     userDtos.Add(ConvertToDto(user));
                 return Ok(userDtos);
             }
-            return NotFound("No users created");
+            throw new EntityNotFoundError("No users created");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -34,7 +35,7 @@ namespace InsuranceApp.Controllers
             var user = _userService.Get(id);
             if (user != null)
                 return Ok(ConvertToDto(user));
-            return BadRequest("No such User Found");
+            throw new EntityNotFoundError("No such user found");
         }
         [HttpPost]
         public IActionResult Add(UserDto userDto)
@@ -43,7 +44,7 @@ namespace InsuranceApp.Controllers
             int id = _userService.Add(user);
             if (id != null)
                 return Ok(id);
-            return BadRequest("Some issue while adding record");
+            throw new EntityInsertError("Some issue while adding record");
         }
         [HttpPut]
         public IActionResult Update(UserDto userDto)
@@ -55,7 +56,7 @@ namespace InsuranceApp.Controllers
                 var modifiedUser = _userService.Update(user);
                 return Ok(ConvertToDto(modifiedUser));
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
         [HttpDelete("{id:int}")]
         public IActionResult DeleteById(int id)
@@ -66,7 +67,7 @@ namespace InsuranceApp.Controllers
                 _userService.Delete(userToDelete);
                 return Ok(userToDelete.UserId);
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
         private UserDto ConvertToDto(User user)
         {

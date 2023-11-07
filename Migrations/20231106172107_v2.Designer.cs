@@ -4,6 +4,7 @@ using InsuranceApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsuranceApp.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20231106172107_v2")]
+    partial class v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,9 +198,9 @@ namespace InsuranceApp.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("DocumentFile")
+                    b.Property<string>("DocumentFile")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DocumentName")
                         .IsRequired()
@@ -296,9 +299,6 @@ namespace InsuranceApp.Migrations
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("InsuranceSchemeSchemeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -311,15 +311,15 @@ namespace InsuranceApp.Migrations
                     b.Property<int>("PaymentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlanId")
-                        .HasColumnType("int");
-
                     b.Property<double>("PremiumAmount")
                         .HasColumnType("float");
 
                     b.Property<string>("PremiumType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SchemeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -335,11 +335,9 @@ namespace InsuranceApp.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("InsuranceSchemeSchemeId");
-
                     b.HasIndex("PaymentId");
 
-                    b.HasIndex("PlanId");
+                    b.HasIndex("SchemeId");
 
                     b.ToTable("InsurancePolicies");
                 });
@@ -579,25 +577,21 @@ namespace InsuranceApp.Migrations
                         .WithMany("InsurancePolicies")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("InsuranceApp.Models.InsuranceScheme", null)
-                        .WithMany("Policies")
-                        .HasForeignKey("InsuranceSchemeSchemeId");
-
                     b.HasOne("InsuranceApp.Models.Payment", "PaidPremiums")
                         .WithMany()
                         .HasForeignKey("PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("InsuranceApp.Models.InsurancePlan", "InsurancePlan")
-                        .WithMany()
-                        .HasForeignKey("PlanId")
+                    b.HasOne("InsuranceApp.Models.InsuranceScheme", "InsuranceScheme")
+                        .WithMany("Policies")
+                        .HasForeignKey("SchemeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Claim");
 
-                    b.Navigation("InsurancePlan");
+                    b.Navigation("InsuranceScheme");
 
                     b.Navigation("PaidPremiums");
                 });

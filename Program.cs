@@ -1,4 +1,5 @@
 using InsuranceApp.Data;
+using InsuranceApp.Middleware;
 using InsuranceApp.Repository;
 using InsuranceApp.Services;
 using Microsoft.EntityFrameworkCore;
@@ -22,10 +23,21 @@ namespace InsuranceApp
             builder.Services.AddTransient(typeof(IEntityRepository<>), typeof(EntityRepository<>));
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IRoleService, RoleService>();
+
             builder.Services.AddTransient<IInsurancePlanService, InsurancePlanService>();
             builder.Services.AddTransient<IInsuranceSchemeService, InsuranceSchemeService>();
             builder.Services.AddTransient<ISchemeDetailsService, SchemeDetailsService>();
             builder.Services.AddTransient<IInsurancePolicyService, InsurancePolicyService>();
+
+            builder.Services.AddTransient<IAdminService, AdminService>();
+
+            builder.Services.AddTransient<IEmployeeService, EmployeeService>();
+            builder.Services.AddTransient<IAgentService, AgentService>();
+            builder.Services.AddTransient<ICustomerService, CustomerService>();
+            builder.Services.AddTransient<IDocumentService, DocumentService>();
+            builder.Services.AddTransient<IPaymentService, PaymentService>();
+            builder.Services.AddTransient<IClaimService, ClaimService>();
+
 
             builder.Services.AddDbContext<MyContext>(options =>
             {
@@ -48,7 +60,7 @@ namespace InsuranceApp
 
             app.UseAuthorization();
 
-
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.MapControllers();
 
             app.Run();
