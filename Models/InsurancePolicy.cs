@@ -15,9 +15,9 @@ namespace InsuranceApp.Models
         public double SumAssured { get; set; }
         public string Status { get; set; }
         public bool IsActive { get; set; }
-        public InsuranceScheme InsuranceScheme { get; set; }
-        [ForeignKey("InsuranceScheme")]
-        public int SchemeId { get; set; }
+        public InsurancePlan InsurancePlan { get; set; }
+        [ForeignKey("InsurancePlan")]
+        public int PlanId { get; set; }
 
         public Claim Claim { get; set; }
         [ForeignKey("Claim")]
