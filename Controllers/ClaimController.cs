@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace InsuranceApp.Controllers
                     claimDtos.Add(ConvertToDto(claim));
                 return Ok(claimDtos);
             }
-            return NotFound("No users created");
+            throw new EntityNotFoundError("No claims created");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -34,7 +35,7 @@ namespace InsuranceApp.Controllers
             var claim = _claimService.Get(id);
             if (claim != null)
                 return Ok(ConvertToDto(claim));
-            return BadRequest("No such Claim Found");
+            throw new EntityNotFoundError("No such Claim Found");
         }
         [HttpPost]
         public IActionResult Add(ClaimDto claimDto)
@@ -43,7 +44,7 @@ namespace InsuranceApp.Controllers
             int id = _claimService.Add(claim);
             if (id != null)
                 return Ok(id);
-            return BadRequest("Some issue while adding record");
+            throw new EntityInsertError("Some issue while adding record");
         }
         [HttpPut]
         public IActionResult Update(ClaimDto claimDto)
@@ -55,7 +56,7 @@ namespace InsuranceApp.Controllers
                 var modifiedClaim = _claimService.Update(claim);
                 return Ok(ConvertToDto(modifiedClaim));
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
         [HttpDelete("{id:int}")]
         public IActionResult DeleteById(int id)
@@ -66,7 +67,7 @@ namespace InsuranceApp.Controllers
                 _claimService.Delete(claimToDelete);
                 return Ok(claimToDelete.ClaimId);
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
         private ClaimDto ConvertToDto(Claim claim)
         {

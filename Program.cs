@@ -25,6 +25,7 @@ namespace InsuranceApp
             builder.Services.AddTransient<IRoleService, RoleService>();
             builder.Services.AddTransient<IAdminService, AdminService>();
 
+            builder.Services.AddTransient<IEmployeeService, EmployeeService>();
             builder.Services.AddTransient<IAgentService, AgentService>();
             builder.Services.AddTransient<ICustomerService, CustomerService>();
             builder.Services.AddTransient<IDocumentService, DocumentService>();

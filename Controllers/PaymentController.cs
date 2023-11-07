@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace InsuranceApp.Controllers
                     paymentDtos.Add(ConvertToDto(payment));
                 return Ok(paymentDtos);
             }
-            return NotFound("No Payment created");
+            throw new EntityNotFoundError("No Payment created");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -34,7 +35,7 @@ namespace InsuranceApp.Controllers
             var payment = _paymentService.Get(id);
             if (payment != null)
                 return Ok(ConvertToDto(payment));
-            return BadRequest("No such Payment Found");
+            throw new EntityNotFoundError("No such Payment Found");
         }
         [HttpPost]
         public IActionResult Add(PaymentDto paymentDto)
@@ -43,7 +44,7 @@ namespace InsuranceApp.Controllers
             int id = _paymentService.Add(payment);
             if (id != null)
                 return Ok(id);
-            return BadRequest("Some issue while adding record");
+            throw new EntityInsertError("Some issue while adding record");
         }
         [HttpPut]
         public IActionResult Update(PaymentDto paymentDto)
@@ -55,7 +56,7 @@ namespace InsuranceApp.Controllers
                 var modifiedPayment = _paymentService.Update(payment);
                 return Ok(ConvertToDto(modifiedPayment));
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
         [HttpDelete("{id:int}")]
         public IActionResult DeleteById(int id)
@@ -66,7 +67,7 @@ namespace InsuranceApp.Controllers
                 _paymentService.Delete(paymentToDelete);
                 return Ok(paymentToDelete.PaymentId);
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No such record exists");
         }
         private PaymentDto ConvertToDto(Payment payment)
         {
