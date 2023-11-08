@@ -40,6 +40,7 @@ namespace InsuranceApp.Controllers
         [HttpPost]
         public IActionResult Add(EmployeeDto employeeDto)
         {
+            //employeeDto.IsActive = true;
             var employee = ConvertToModel(employeeDto);
             int id = _employeeService.Add(employee);
             if (id != null)
@@ -52,6 +53,7 @@ namespace InsuranceApp.Controllers
             var existingEmployee = _employeeService.Check(employeeDto.EmployeeId);
             if (existingEmployee != null)
             {
+                //employeeDto.IsActive = existingEmployee.IsActive;
                 var employee = ConvertToModel(employeeDto);
                 var modifiedEmployee = _employeeService.Update(employee);
                 return Ok(ConvertToDto(modifiedEmployee));
@@ -78,8 +80,9 @@ namespace InsuranceApp.Controllers
                 LastName = employee.LastName,
                 MobileNo = employee.MobileNo,
                 Email = employee.Email,
-                Salary= employee.Salary,
+                Salary = employee.Salary,
                 UserId = employee.UserId,
+                //IsActive = employee.IsActive,
 
             };
         }
@@ -95,8 +98,9 @@ namespace InsuranceApp.Controllers
                 Salary = employeeDto.Salary,
                 UserId = employeeDto.UserId,
                 IsActive = true,
-                
+
             };
         }
     }
 }
+

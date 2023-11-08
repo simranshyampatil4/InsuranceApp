@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.DTO;
+using InsuranceApp.Exceptions;
 using InsuranceApp.Models;
 using InsuranceApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace InsuranceApp.Controllers
                     insurancePlanDtos.Add(ConvertToDto(insurPl));
                 return Ok(insurancePlanDtos);
             }
-            return NotFound("No users created");
+            throw new EntityNotFoundError("No Such Insurance Plan Found");
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -34,7 +35,7 @@ namespace InsuranceApp.Controllers
             var insurPlan = _insurancePlanService.Get(id);
             if (insurPlan != null)
                 return Ok(ConvertToDto(insurPlan));
-            return BadRequest("No such User Found");
+            throw new EntityNotFoundError("No Such Insurance Plan Found");
         }
         [HttpPost]
         public IActionResult Add(InsurancePlanDto insurancePlanDto)
@@ -43,7 +44,7 @@ namespace InsuranceApp.Controllers
             int id = _insurancePlanService.Add(insurancePlan);
             if (id != null)
                 return Ok(id);
-            return BadRequest("Some issue while adding record");
+            throw new EntityInsertError("Some issue while adding Insurance Plan");
         }
         [HttpPut]
         public IActionResult Update(InsurancePlanDto insurancePlanDto)
@@ -55,7 +56,7 @@ namespace InsuranceApp.Controllers
                 var modifiedPlan = _insurancePlanService.Update(insurancePlan);
                 return Ok(ConvertToDto(modifiedPlan));
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No Such Insurance Plan Exists");
         }
         [HttpDelete("{id:int}")]
         public IActionResult DeleteById(int id)
@@ -66,7 +67,7 @@ namespace InsuranceApp.Controllers
                 _insurancePlanService.Delete(insuranceToDelete);
                 return Ok(insuranceToDelete.PlanId);
             }
-            return BadRequest("No such record exists");
+            throw new EntityNotFoundError("No Such Insurance Plan Exists");
         }
         private InsurancePlanDto ConvertToDto(InsurancePlan insurancePlan)
         {

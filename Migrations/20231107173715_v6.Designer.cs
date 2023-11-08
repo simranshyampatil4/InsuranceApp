@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsuranceApp.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20231106175014_v2")]
-    partial class v2
+    [Migration("20231107173715_v6")]
+    partial class v6
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,6 +119,9 @@ namespace InsuranceApp.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PolicyNo")
                         .HasColumnType("int");
 
@@ -195,9 +198,9 @@ namespace InsuranceApp.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DocumentFile")
+                    b.Property<byte[]>("DocumentFile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("DocumentName")
                         .IsRequired()
