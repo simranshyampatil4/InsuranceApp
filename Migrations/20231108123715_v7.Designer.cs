@@ -4,6 +4,7 @@ using InsuranceApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsuranceApp.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20231108123715_v7")]
+    partial class v7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +51,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Admins", (string)null);
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Agent", b =>
@@ -92,7 +95,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Agents", (string)null);
+                    b.ToTable("Agents");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Claim", b =>
@@ -128,7 +131,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("ClaimId");
 
-                    b.ToTable("Claims", (string)null);
+                    b.ToTable("Claims");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Customer", b =>
@@ -181,7 +184,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasIndex("AgentId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Document", b =>
@@ -214,7 +217,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Documents", (string)null);
+                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Employee", b =>
@@ -254,7 +257,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.InsurancePlan", b =>
@@ -274,7 +277,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("PlanId");
 
-                    b.ToTable("InsurancePlans", (string)null);
+                    b.ToTable("InsurancePlans");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.InsurancePolicy", b =>
@@ -336,7 +339,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("InsurancePolicies", (string)null);
+                    b.ToTable("InsurancePolicies");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.InsuranceScheme", b =>
@@ -369,7 +372,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasIndex("InsurancePlansPlanId");
 
-                    b.ToTable("InsuranceSchemes", (string)null);
+                    b.ToTable("InsuranceSchemes");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Payment", b =>
@@ -401,7 +404,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("PaymentId");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Role", b =>
@@ -421,7 +424,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.SchemeDetails", b =>
@@ -472,7 +475,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("DetailId");
 
-                    b.ToTable("SchemeDetails", (string)null);
+                    b.ToTable("SchemeDetails");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.User", b =>
@@ -501,7 +504,7 @@ namespace InsuranceApp.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Admin", b =>

@@ -104,7 +104,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "RoleId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,7 +125,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.DetailId,
                         principalTable: "SchemeDetails",
                         principalColumn: "DetailId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -147,7 +147,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,7 +173,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,7 +198,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -247,7 +247,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.AgentId,
                         principalTable: "Agents",
                         principalColumn: "AgentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -270,7 +270,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,7 +299,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.ClaimId,
                         principalTable: "Claims",
                         principalColumn: "ClaimId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_InsurancePolicies_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -310,13 +310,13 @@ namespace InsuranceApp.Migrations
                         column: x => x.SchemeId,
                         principalTable: "InsuranceSchemes",
                         principalColumn: "SchemeId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_InsurancePolicies_Payments_PaymentId",
                         column: x => x.PaymentId,
                         principalTable: "Payments",
                         principalColumn: "PaymentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(

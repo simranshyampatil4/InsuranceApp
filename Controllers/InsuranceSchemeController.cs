@@ -81,6 +81,7 @@ namespace InsuranceApp.Controllers
                 SchemeId = insuranceScheme.SchemeId,
                 SchemeName = insuranceScheme.SchemeName,
                 DetailId = insuranceScheme.DetailId,
+                PlanId = insuranceScheme.PlanId,
                 //Contacts = user.Contacts
             };
         }
@@ -91,6 +92,7 @@ namespace InsuranceApp.Controllers
                 SchemeId = insuranceSchemeDto.SchemeId,
                 SchemeName = insuranceSchemeDto.SchemeName,
                 DetailId = insuranceSchemeDto.DetailId,
+                PlanId = insuranceSchemeDto.PlanId,
                 IsActive = true,
                 //Contacts = userDto.Contacts
             };

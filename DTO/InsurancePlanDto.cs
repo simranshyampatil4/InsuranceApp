@@ -4,6 +4,6 @@
     {
         public int PlanId { get; set; }
         public string PlanName { get; set; }
-        public int SchemeId { get; set; }
+        //public int SchemeId { get; set; }
     }
 }
