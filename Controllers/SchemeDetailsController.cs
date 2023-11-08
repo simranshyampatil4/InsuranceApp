@@ -28,6 +28,7 @@ namespace InsuranceApp.Controllers
                 return Ok(schemeDetailsDtos);
             }
             throw new EntityNotFoundError("No Such Scheme Details Found");
+
         }
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
@@ -36,6 +37,7 @@ namespace InsuranceApp.Controllers
             if (schemeDetail != null)
                 return Ok(ConvertToDto(schemeDetail));
             throw new EntityNotFoundError("No Such Scheme Details Found");
+
         }
         [HttpPost]
         public IActionResult Add(SchemeDetailsDto schemeDetailsDto)
@@ -45,6 +47,7 @@ namespace InsuranceApp.Controllers
             if (id != null)
                 return Ok(id);
             throw new EntityInsertError("Some issue while adding Scheme Details");
+
         }
         [HttpPut]
         public IActionResult Update(SchemeDetailsDto schemeDetailsDto)
@@ -57,6 +60,7 @@ namespace InsuranceApp.Controllers
                 return Ok(ConvertToDto(modifiedDetail));
             }
             throw new EntityNotFoundError("No Such Insurance Scheme Details Exists");
+
         }
         [HttpDelete("{id:int}")]
         public IActionResult DeleteById(int id)
@@ -67,7 +71,10 @@ namespace InsuranceApp.Controllers
                 _schemeDetailsService.Delete(detailsToDelete);
                 return Ok(detailsToDelete.DetailId);
             }
+
             throw new EntityNotFoundError("No Such Insurance Scheme Details Exists");
+
+
         }
         private SchemeDetailsDto ConvertToDto(SchemeDetails schemeDetails)
         {

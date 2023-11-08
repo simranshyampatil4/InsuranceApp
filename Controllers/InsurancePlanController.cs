@@ -68,6 +68,8 @@ namespace InsuranceApp.Controllers
                 return Ok(insuranceToDelete.PlanId);
             }
             throw new EntityNotFoundError("No Such Insurance Plan Exists");
+
+
         }
         private InsurancePlanDto ConvertToDto(InsurancePlan insurancePlan)
         {
