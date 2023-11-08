@@ -23,7 +23,7 @@ namespace InsuranceApp.Migrations
                 table: "InsurancePlans");
 
             migrationBuilder.AddColumn<int>(
-                name: "InsurancePlansPlanId",
+                name: "PlanId",
                 table: "InsuranceSchemes",
                 type: "int",
                 nullable: false,
