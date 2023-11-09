@@ -12,5 +12,6 @@ namespace InsuranceApp.Models
         public double Tax { get; set; }
         public double TotalPayment { get; set; }
         public bool IsActive { get; set; }
+        public InsurancePolicy InsurancePolicy { get; set; }
     }
 }

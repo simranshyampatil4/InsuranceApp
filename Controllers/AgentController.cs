@@ -91,7 +91,7 @@ namespace InsuranceApp.Controllers
                 MobileNo = agent.MobileNo,
                 UserId = agent.UserId,
                 CommissionEarned = agent.CommissionEarned,
-                IsActive = agent.IsActive
+                //IsActive = agent.IsActive
             };
         }
 
@@ -107,7 +107,7 @@ namespace InsuranceApp.Controllers
                 MobileNo = agentDto.MobileNo,
                 UserId = agentDto.UserId,
                 CommissionEarned = agentDto.CommissionEarned,
-                IsActive = agentDto.IsActive
+                IsActive = true
             };
         }
     }

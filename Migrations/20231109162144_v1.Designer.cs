@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsuranceApp.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20231107114332_v3")]
-    partial class v3
+    [Migration("20231109162144_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,8 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("AdminId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Admins");
                 });
@@ -93,7 +94,8 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("AgentId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Agents");
                 });
@@ -119,7 +121,13 @@ namespace InsuranceApp.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PolicyNo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PolicyNo1")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -127,6 +135,8 @@ namespace InsuranceApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ClaimId");
+
+                    b.HasIndex("PolicyNo1");
 
                     b.ToTable("Claims");
                 });
@@ -177,9 +187,15 @@ namespace InsuranceApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("CustomerId");
 
                     b.HasIndex("AgentId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Customers");
                 });
@@ -195,9 +211,9 @@ namespace InsuranceApp.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DocumentFile")
+                    b.Property<byte[]>("DocumentFile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("DocumentName")
                         .IsRequired()
@@ -252,7 +268,8 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("EmployeeId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Employees");
                 });
@@ -272,12 +289,7 @@ namespace InsuranceApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SchemeId")
-                        .HasColumnType("int");
-
                     b.HasKey("PlanId");
-
-                    b.HasIndex("SchemeId");
 
                     b.ToTable("InsurancePlans");
                 });
@@ -289,9 +301,6 @@ namespace InsuranceApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PolicyNo"));
-
-                    b.Property<int>("ClaimId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
@@ -330,16 +339,15 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("PolicyNo");
 
-                    b.HasIndex("ClaimId")
-                        .IsUnique();
-
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("InsuranceSchemeSchemeId");
 
-                    b.HasIndex("PaymentId");
+                    b.HasIndex("PaymentId")
+                        .IsUnique();
 
-                    b.HasIndex("PlanId");
+                    b.HasIndex("PlanId")
+                        .IsUnique();
 
                     b.ToTable("InsurancePolicies");
                 });
@@ -355,8 +363,14 @@ namespace InsuranceApp.Migrations
                     b.Property<int>("DetailId")
                         .HasColumnType("int");
 
+                    b.Property<int>("InsurancePlansPlanId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<int>("PlanId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SchemeName")
                         .IsRequired()
@@ -364,7 +378,10 @@ namespace InsuranceApp.Migrations
 
                     b.HasKey("SchemeId");
 
-                    b.HasIndex("DetailId");
+                    b.HasIndex("DetailId")
+                        .IsUnique();
+
+                    b.HasIndex("InsurancePlansPlanId");
 
                     b.ToTable("InsuranceSchemes");
                 });
@@ -504,8 +521,8 @@ namespace InsuranceApp.Migrations
             modelBuilder.Entity("InsuranceApp.Models.Admin", b =>
                 {
                     b.HasOne("InsuranceApp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Admin")
+                        .HasForeignKey("InsuranceApp.Models.Admin", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -515,12 +532,23 @@ namespace InsuranceApp.Migrations
             modelBuilder.Entity("InsuranceApp.Models.Agent", b =>
                 {
                     b.HasOne("InsuranceApp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Agent")
+                        .HasForeignKey("InsuranceApp.Models.Agent", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("InsuranceApp.Models.Claim", b =>
+                {
+                    b.HasOne("InsuranceApp.Models.InsurancePolicy", "Policy")
+                        .WithMany("Claims")
+                        .HasForeignKey("PolicyNo1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Policy");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Customer", b =>
@@ -531,7 +559,15 @@ namespace InsuranceApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("InsuranceApp.Models.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("InsuranceApp.Models.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Agent");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("InsuranceApp.Models.Document", b =>
@@ -548,33 +584,16 @@ namespace InsuranceApp.Migrations
             modelBuilder.Entity("InsuranceApp.Models.Employee", b =>
                 {
                     b.HasOne("InsuranceApp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Employee")
+                        .HasForeignKey("InsuranceApp.Models.Employee", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("InsuranceApp.Models.InsurancePlan", b =>
-                {
-                    b.HasOne("InsuranceApp.Models.InsuranceScheme", "InsuranceScheme")
-                        .WithMany()
-                        .HasForeignKey("SchemeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("InsuranceScheme");
-                });
-
             modelBuilder.Entity("InsuranceApp.Models.InsurancePolicy", b =>
                 {
-                    b.HasOne("InsuranceApp.Models.Claim", "Claim")
-                        .WithOne("Policy")
-                        .HasForeignKey("InsuranceApp.Models.InsurancePolicy", "ClaimId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("InsuranceApp.Models.Customer", null)
                         .WithMany("InsurancePolicies")
                         .HasForeignKey("CustomerId");
@@ -584,18 +603,16 @@ namespace InsuranceApp.Migrations
                         .HasForeignKey("InsuranceSchemeSchemeId");
 
                     b.HasOne("InsuranceApp.Models.Payment", "PaidPremiums")
-                        .WithMany()
-                        .HasForeignKey("PaymentId")
+                        .WithOne("InsurancePolicy")
+                        .HasForeignKey("InsuranceApp.Models.InsurancePolicy", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("InsuranceApp.Models.InsurancePlan", "InsurancePlan")
-                        .WithMany()
-                        .HasForeignKey("PlanId")
+                        .WithOne("InsurancePolicy")
+                        .HasForeignKey("InsuranceApp.Models.InsurancePolicy", "PlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Claim");
 
                     b.Navigation("InsurancePlan");
 
@@ -605,10 +622,18 @@ namespace InsuranceApp.Migrations
             modelBuilder.Entity("InsuranceApp.Models.InsuranceScheme", b =>
                 {
                     b.HasOne("InsuranceApp.Models.SchemeDetails", "SchemeDetails")
-                        .WithMany()
-                        .HasForeignKey("DetailId")
+                        .WithOne("InsuranceScheme")
+                        .HasForeignKey("InsuranceApp.Models.InsuranceScheme", "DetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("InsuranceApp.Models.InsurancePlan", "InsurancePlans")
+                        .WithMany("InsuranceSchemes")
+                        .HasForeignKey("InsurancePlansPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InsurancePlans");
 
                     b.Navigation("SchemeDetails");
                 });
@@ -629,12 +654,6 @@ namespace InsuranceApp.Migrations
                     b.Navigation("Customers");
                 });
 
-            modelBuilder.Entity("InsuranceApp.Models.Claim", b =>
-                {
-                    b.Navigation("Policy")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("InsuranceApp.Models.Customer", b =>
                 {
                     b.Navigation("Documents");
@@ -642,9 +661,49 @@ namespace InsuranceApp.Migrations
                     b.Navigation("InsurancePolicies");
                 });
 
+            modelBuilder.Entity("InsuranceApp.Models.InsurancePlan", b =>
+                {
+                    b.Navigation("InsurancePolicy")
+                        .IsRequired();
+
+                    b.Navigation("InsuranceSchemes");
+                });
+
+            modelBuilder.Entity("InsuranceApp.Models.InsurancePolicy", b =>
+                {
+                    b.Navigation("Claims");
+                });
+
             modelBuilder.Entity("InsuranceApp.Models.InsuranceScheme", b =>
                 {
                     b.Navigation("Policies");
+                });
+
+            modelBuilder.Entity("InsuranceApp.Models.Payment", b =>
+                {
+                    b.Navigation("InsurancePolicy")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("InsuranceApp.Models.SchemeDetails", b =>
+                {
+                    b.Navigation("InsuranceScheme")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("InsuranceApp.Models.User", b =>
+                {
+                    b.Navigation("Admin")
+                        .IsRequired();
+
+                    b.Navigation("Agent")
+                        .IsRequired();
+
+                    b.Navigation("Customer")
+                        .IsRequired();
+
+                    b.Navigation("Employee")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

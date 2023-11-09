@@ -82,7 +82,7 @@ namespace InsuranceApp.Controllers
                 Email = employee.Email,
                 Salary = employee.Salary,
                 UserId = employee.UserId,
-                //IsActive = employee.IsActive,
+                //IsActive = true,
 
             };
         }

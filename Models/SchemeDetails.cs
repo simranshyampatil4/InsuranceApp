@@ -18,5 +18,7 @@ namespace InsuranceApp.Models
         public double RegistrationCommRatio { get; set; }
         public double InstallmentCommRatio { get; set; }
         public bool IsActive { get; set; }
+        public InsuranceScheme InsuranceScheme { get; set; }
+        
     }
 }

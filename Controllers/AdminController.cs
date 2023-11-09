@@ -84,7 +84,7 @@ namespace InsuranceApp.Controllers
                 AdminId = admin.AdminId,
                 FirstName = admin.FirstName,
                 LastName = admin.LastName,
-                IsActive = admin.IsActive,
+                //IsActive = admin.IsActive,
                 UserId = admin.UserId
             };
         }
@@ -96,7 +96,7 @@ namespace InsuranceApp.Controllers
                 AdminId = adminDto.AdminId,
                 FirstName = adminDto.FirstName,
                 LastName = adminDto.LastName,
-                IsActive = adminDto.IsActive,
+                IsActive = true,
                 UserId = adminDto.UserId
             };
         }

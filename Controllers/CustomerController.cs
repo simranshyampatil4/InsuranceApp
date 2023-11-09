@@ -91,7 +91,8 @@ namespace InsuranceApp.Controllers
                 Nominee = customer.Nominee,
                 NomineeRelation = customer.NomineeRelation,
                 AgentId = customer.AgentId,
-                IsActive = customer.IsActive
+                UserId = customer.UserId,
+                //IsActive = customer.IsActive
             };
         }
 
@@ -109,7 +110,8 @@ namespace InsuranceApp.Controllers
                 Nominee = customerDto.Nominee,
                 NomineeRelation = customerDto.NomineeRelation,
                 AgentId = customerDto.AgentId,
-                IsActive = customerDto.IsActive
+                UserId = customerDto.UserId,
+                IsActive = true
             };
         }
     }

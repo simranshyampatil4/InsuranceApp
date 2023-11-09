@@ -86,7 +86,7 @@ namespace InsuranceApp.Controllers
                 SumAssured = insurancePolicy.SumAssured,
                 Status = insurancePolicy.Status,
                 PlanId = insurancePolicy.PlanId,
-                ClaimId = insurancePolicy.ClaimId,
+                //ClaimId = insurancePolicy.ClaimId,
                 PaymentId = insurancePolicy.PaymentId,
                 //Contacts = user.Contacts
             };
@@ -103,7 +103,7 @@ namespace InsuranceApp.Controllers
                 SumAssured = insurancePolicyDto.SumAssured,
                 Status = insurancePolicyDto.Status,
                 PlanId = insurancePolicyDto.PlanId,
-                ClaimId = insurancePolicyDto.ClaimId,
+                //ClaimId = insurancePolicyDto.ClaimId,
                 PaymentId = insurancePolicyDto.PaymentId,
                 IsActive = true,
                 //Contacts = userDto.Contacts

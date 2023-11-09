@@ -19,7 +19,9 @@ namespace InsuranceApp.Models
         public Agent Agent { get; set; }
         [ForeignKey("Agent")]
         public int AgentId { get; set; }
-
+        public User User { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
         public List<InsurancePolicy> InsurancePolicies { get; set; }
 
         public List<Document> Documents { get; set; }

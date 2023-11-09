@@ -11,7 +11,7 @@ namespace InsuranceApp.DTO
         public string MobileNo { get; set; }
         public string Email { get; set; }
         public double Salary { get; set; }
-        public bool IsActive { get; set; }
+        //public bool IsActive { get; set; }
         public int UserId { get; set; }
     }
 }

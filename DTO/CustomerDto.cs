@@ -12,6 +12,7 @@
         public string Nominee { get; set; }
         public string NomineeRelation { get; set; }
         public int AgentId { get; set; }
-        public bool IsActive { get; set; }
+        public int UserId { get; set; }
+        //public bool IsActive { get; set; }
     }
 }

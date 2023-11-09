@@ -10,7 +10,7 @@
         public double SumAssured { get; set; }
         public string Status { get; set; }
         public int PlanId { get; set; }
-        public int ClaimId { get; set; }
+        //public int ClaimId { get; set; }
         public int PaymentId { get; set; }
     }
 }

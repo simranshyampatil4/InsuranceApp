@@ -86,7 +86,7 @@ namespace InsuranceApp.Controllers
                 DocumentName = document.DocumentName,
                 DocumentFile = document.DocumentFile,
                 CustomerId = document.CustomerId,
-                IsActive = document.IsActive
+                //IsActive = document.IsActive
             };
         }
 
@@ -99,7 +99,7 @@ namespace InsuranceApp.Controllers
                 DocumentName = documentDto.DocumentName,
                 DocumentFile = documentDto.DocumentFile,
                 CustomerId = documentDto.CustomerId,
-                IsActive = documentDto.IsActive
+                IsActive = true
             };
         }
     }

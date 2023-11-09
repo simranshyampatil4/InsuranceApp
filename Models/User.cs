@@ -14,5 +14,9 @@ namespace InsuranceApp.Models
         public Role Role { get; set; }
         [ForeignKey("Role")]
         public int RoleId { get; set; }
+        public Agent Agent { get; set; }
+        public Admin Admin { get; set; }
+        public Customer Customer { get; set; }
+        public Employee Employee { get; set; }
     }
 }

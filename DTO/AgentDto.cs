@@ -10,6 +10,6 @@
         public string MobileNo { get; set; }
         public int UserId { get; set; }
         public double CommissionEarned { get; set; }
-        public bool IsActive { get; set; }
+        //public bool IsActive { get; set; }
     }
 }

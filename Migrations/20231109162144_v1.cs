@@ -12,21 +12,17 @@ namespace InsuranceApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Claims",
+                name: "InsurancePlans",
                 columns: table => new
                 {
-                    ClaimId = table.Column<int>(type: "int", nullable: false)
+                    PlanId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClaimAmount = table.Column<double>(type: "float", nullable: false),
-                    BankAccountNumber = table.Column<double>(type: "float", nullable: false),
-                    BankIfscCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PolicyNo = table.Column<int>(type: "int", nullable: false)
+                    PlanName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Claims", x => x.ClaimId);
+                    table.PrimaryKey("PK_InsurancePlans", x => x.PlanId);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,7 +100,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "RoleId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,17 +111,25 @@ namespace InsuranceApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SchemeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    DetailId = table.Column<int>(type: "int", nullable: false)
+                    DetailId = table.Column<int>(type: "int", nullable: false),
+                    InsurancePlansPlanId = table.Column<int>(type: "int", nullable: false),
+                    PlanId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InsuranceSchemes", x => x.SchemeId);
                     table.ForeignKey(
+                        name: "FK_InsuranceSchemes_InsurancePlans_InsurancePlansPlanId",
+                        column: x => x.InsurancePlansPlanId,
+                        principalTable: "InsurancePlans",
+                        principalColumn: "PlanId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_InsuranceSchemes_SchemeDetails_DetailId",
                         column: x => x.DetailId,
                         principalTable: "SchemeDetails",
                         principalColumn: "DetailId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -147,7 +151,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,7 +177,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,27 +202,6 @@ namespace InsuranceApp.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InsurancePlans",
-                columns: table => new
-                {
-                    PlanId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PlanName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    SchemeId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InsurancePlans", x => x.PlanId);
-                    table.ForeignKey(
-                        name: "FK_InsurancePlans_InsuranceSchemes_SchemeId",
-                        column: x => x.SchemeId,
-                        principalTable: "InsuranceSchemes",
-                        principalColumn: "SchemeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -237,6 +220,7 @@ namespace InsuranceApp.Migrations
                     Nominee = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NomineeRelation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AgentId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -247,7 +231,13 @@ namespace InsuranceApp.Migrations
                         column: x => x.AgentId,
                         principalTable: "Agents",
                         principalColumn: "AgentId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Customers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -258,7 +248,7 @@ namespace InsuranceApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DocumentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DocumentName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DocumentFile = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DocumentFile = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -270,7 +260,7 @@ namespace InsuranceApp.Migrations
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -286,53 +276,91 @@ namespace InsuranceApp.Migrations
                     SumAssured = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    SchemeId = table.Column<int>(type: "int", nullable: false),
-                    ClaimId = table.Column<int>(type: "int", nullable: false),
+                    PlanId = table.Column<int>(type: "int", nullable: false),
                     PaymentId = table.Column<int>(type: "int", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
+                    CustomerId = table.Column<int>(type: "int", nullable: true),
+                    InsuranceSchemeSchemeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InsurancePolicies", x => x.PolicyNo);
-                    table.ForeignKey(
-                        name: "FK_InsurancePolicies_Claims_ClaimId",
-                        column: x => x.ClaimId,
-                        principalTable: "Claims",
-                        principalColumn: "ClaimId",
-                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_InsurancePolicies_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId");
                     table.ForeignKey(
-                        name: "FK_InsurancePolicies_InsuranceSchemes_SchemeId",
-                        column: x => x.SchemeId,
+                        name: "FK_InsurancePolicies_InsurancePlans_PlanId",
+                        column: x => x.PlanId,
+                        principalTable: "InsurancePlans",
+                        principalColumn: "PlanId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InsurancePolicies_InsuranceSchemes_InsuranceSchemeSchemeId",
+                        column: x => x.InsuranceSchemeSchemeId,
                         principalTable: "InsuranceSchemes",
-                        principalColumn: "SchemeId",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "SchemeId");
                     table.ForeignKey(
                         name: "FK_InsurancePolicies_Payments_PaymentId",
                         column: x => x.PaymentId,
                         principalTable: "Payments",
                         principalColumn: "PaymentId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Claims",
+                columns: table => new
+                {
+                    ClaimId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClaimAmount = table.Column<double>(type: "float", nullable: false),
+                    BankAccountNumber = table.Column<double>(type: "float", nullable: false),
+                    BankIfscCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PolicyNo1 = table.Column<int>(type: "int", nullable: false),
+                    PolicyNo = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Claims", x => x.ClaimId);
+                    table.ForeignKey(
+                        name: "FK_Claims_InsurancePolicies_PolicyNo1",
+                        column: x => x.PolicyNo1,
+                        principalTable: "InsurancePolicies",
+                        principalColumn: "PolicyNo",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Admins_UserId",
                 table: "Admins",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Agents_UserId",
                 table: "Agents",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Claims_PolicyNo1",
+                table: "Claims",
+                column: "PolicyNo1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_AgentId",
                 table: "Customers",
                 column: "AgentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_UserId",
+                table: "Customers",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_CustomerId",
@@ -342,17 +370,7 @@ namespace InsuranceApp.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_UserId",
                 table: "Employees",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InsurancePlans_SchemeId",
-                table: "InsurancePlans",
-                column: "SchemeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InsurancePolicies_ClaimId",
-                table: "InsurancePolicies",
-                column: "ClaimId",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -361,19 +379,32 @@ namespace InsuranceApp.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InsurancePolicies_PaymentId",
+                name: "IX_InsurancePolicies_InsuranceSchemeSchemeId",
                 table: "InsurancePolicies",
-                column: "PaymentId");
+                column: "InsuranceSchemeSchemeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InsurancePolicies_SchemeId",
+                name: "IX_InsurancePolicies_PaymentId",
                 table: "InsurancePolicies",
-                column: "SchemeId");
+                column: "PaymentId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InsurancePolicies_PlanId",
+                table: "InsurancePolicies",
+                column: "PlanId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_InsuranceSchemes_DetailId",
                 table: "InsuranceSchemes",
-                column: "DetailId");
+                column: "DetailId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InsuranceSchemes_InsurancePlansPlanId",
+                table: "InsuranceSchemes",
+                column: "InsurancePlansPlanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -388,19 +419,16 @@ namespace InsuranceApp.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
+                name: "Claims");
+
+            migrationBuilder.DropTable(
                 name: "Documents");
 
             migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "InsurancePlans");
-
-            migrationBuilder.DropTable(
                 name: "InsurancePolicies");
-
-            migrationBuilder.DropTable(
-                name: "Claims");
 
             migrationBuilder.DropTable(
                 name: "Customers");
@@ -413,6 +441,9 @@ namespace InsuranceApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Agents");
+
+            migrationBuilder.DropTable(
+                name: "InsurancePlans");
 
             migrationBuilder.DropTable(
                 name: "SchemeDetails");
