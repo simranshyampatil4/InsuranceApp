@@ -12,7 +12,7 @@ namespace InsuranceApp.Models
         public string BankIfscCode { get; set; }
         public DateTime Date { get; set; }
         public string Status { get; set; }
-        public InsurancePolicy Policy { get; set; }
+        public InsurancePolicy InsurancePolicy { get; set; }
         [ForeignKey("InsurancePolicy")]
         public int PolicyNo { get; set; }
         public bool IsActive { get; set; }

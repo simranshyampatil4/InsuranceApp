@@ -13,7 +13,7 @@ namespace InsuranceApp.Models
         [ForeignKey("SchemeDetails")]
         public int DetailId { get; set; }
         public List<InsurancePolicy> Policies { get; set; }
-        public InsurancePlan InsurancePlans { get; set; }
+        public InsurancePlan InsurancePlan { get; set; }
         [ForeignKey("InsurancePlan")]
         public int PlanId{ get; set; }
     }

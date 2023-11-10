@@ -19,7 +19,7 @@ namespace InsuranceApp.Models
         [ForeignKey("InsurancePlan")]
         public int PlanId { get; set; }
         public List<Claim>? Claims { get; set; }
-        public Payment PaidPremiums { get; set; }
+        public Payment Payment { get; set; }
         [ForeignKey("Payment")]
         public int PaymentId { get; set; }
     }
