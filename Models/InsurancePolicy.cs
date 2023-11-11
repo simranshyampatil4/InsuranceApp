@@ -22,5 +22,8 @@ namespace InsuranceApp.Models
         public Payment Payment { get; set; }
         [ForeignKey("Payment")]
         public int PaymentId { get; set; }
+        public Customer Customer { get; set; }
+        [ForeignKey("Customer")]
+        public int CustomerId { get; set; }
     }
 }

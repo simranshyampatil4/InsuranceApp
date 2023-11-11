@@ -12,5 +12,6 @@
         public int PlanId { get; set; }
         //public int ClaimId { get; set; }
         public int PaymentId { get; set; }
+        public int CustomerId { get; set; }
     }
 }

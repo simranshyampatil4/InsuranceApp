@@ -88,6 +88,7 @@ namespace InsuranceApp.Controllers
                 PlanId = insurancePolicy.PlanId,
                 //ClaimId = insurancePolicy.ClaimId,
                 PaymentId = insurancePolicy.PaymentId,
+                CustomerId = insurancePolicy.CustomerId,
                 //Contacts = user.Contacts
             };
         }
@@ -105,6 +106,7 @@ namespace InsuranceApp.Controllers
                 PlanId = insurancePolicyDto.PlanId,
                 //ClaimId = insurancePolicyDto.ClaimId,
                 PaymentId = insurancePolicyDto.PaymentId,
+                CustomerId = insurancePolicyDto.CustomerId,
                 IsActive = true,
                 //Contacts = userDto.Contacts
             };
